@@ -19,3 +19,8 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.boxShadow {
+  box-shadow: -20px -20px 50px rgb(255, 255, 255, 0.5),
+    -20px -20px 80px rgb(255, 255, 255, 0.1), 0 0 50px rgb(140, 69, 255);
+}
