@@ -1,12 +1,18 @@
-"use client"
+"use client";
 
 import Image from "next/image";
 import productImage from "@/assets/product-image.png";
-
-import guageImg from "@/assets/icon-guage.png"
-import clickImg from "@/assets/icon-click.png"
-import starsImg from "@/assets/icon-stars.png"
-
+import guageImg from "@/assets/icon-guage.png";
+import clickImg from "@/assets/icon-click.png";
+import starsImg from "@/assets/icon-stars.png";
+import { useEffect, useRef } from "react";
+import {
+  animate,
+  motion,
+  useMotionTemplate,
+  useMotionValue,
+  ValueAnimationTransition,
+} from "framer-motion";
 
 const tabs = [
   {
@@ -35,6 +41,70 @@ const tabs = [
   },
 ];
 
+const FeatureTab = (tab: (typeof tabs)[number]) => {
+  const tabRef = useRef<HTMLDivElement>(null);
+  const dotLottieRef = useRef(null);
+
+  const xPercentage = useMotionValue(0);
+  const yPercentage = useMotionValue(0);
+
+  const maskImage = useMotionTemplate`radial-gradient(80px 80px at ${xPercentage}% ${yPercentage}%,black,transparent)`;
+
+  useEffect(() => {
+    if (!tabRef.current) return;
+    const { height, width } = tabRef.current.getBoundingClientRect();
+
+    const circumference = height * 2 + width * 2;
+
+    const times = [
+      0,
+      width / circumference,
+      (width + height) / circumference,
+      (width * 2 + height) / circumference,
+      1,
+    ];
+
+    const options: ValueAnimationTransition = {
+      times,
+      duration: 4,
+      repeat: Infinity,
+      ease: "linear",
+      repeatType: "loop",
+    };
+
+    animate(xPercentage, [0, 100, 100, 0, 0], options);
+    animate(xPercentage, [0, 0, 100, 100, 0], options);
+  }, []);
+
+  const handleTabHover = () => {
+    if (dotLottieRef.current === null) return;
+    // dotLottieRef.current.play();
+  };
+  return (
+    <div
+      ref={tabRef}
+      onMouseEnter={handleTabHover}
+      className="relative border border-white/15 rounded-xl p-2.5 flex items-center gap-2.5 lg:flex-1"
+    >
+      <motion.div
+        style={{
+          maskImage,
+        }}
+        className="absolute inset-0 border border-[#A369FF] -m-px rounded-xl"
+      ></motion.div>
+      <div className="border border-white/15 p-2.5 rounded-lg inline-flex items-center w-12 h-12">
+        <Image width={40} height={8} src={tab.icon} alt="icon" />
+      </div>
+      <div className="p-2.5">{tab.title}</div>
+      {tab.isNew && (
+        <div className="text-xs rounded-full px-2 py-0.5 bg-[#8c44ff] text-black font-semibold">
+          new
+        </div>
+      )}
+    </div>
+  );
+};
+
 export const Features = () => {
   return (
     <section className="container py-20 md:py-24">
@@ -47,28 +117,17 @@ export const Features = () => {
       </p>
       <div className="mt-10 flex flex-col lg:flex-row gap-3 ">
         {tabs.map((tab) => (
-          <div
-            key={tab.title}
-            className="border border-white/15 rounded-xl p-2.5 flex items-center gap-2.5 lg:flex-1"
-          >
-            <div className="border border-white/15 p-2.5 rounded-lg inline-flex items-center w-12 h-12">
-              <Image width={40} height={8} src={tab.icon} alt="icon" />
-            </div>
-            <div className="p-2.5">{tab.title}</div>
-            {tab.isNew && (
-              <div className="text-xs rounded-full px-2 py-0.5 bg-[#8c44ff] text-black font-semibold">
-                new
-              </div>
-            )}
-          </div>
+          <FeatureTab {...tab} key={tab.title} />
         ))}
       </div>
-        <div className="rounded-xl mt-3 p-2.5 border border-white/20">
-<div className="aspect-video bg-cover border border-white/20 rounded-lg" style={{
-  backgroundImage: `url(${productImage.src})`
-}}></div>
-          {/* <Image src={productImage} alt="product Image" /> */}
-        </div>
+      <div className="rounded-xl mt-3 p-2.5 border border-white/20">
+        <div
+          className="aspect-video bg-cover border border-white/20 rounded-lg"
+          style={{
+            backgroundImage: `url(${productImage.src})`,
+          }}
+        ></div>
+      </div>
     </section>
   );
 };

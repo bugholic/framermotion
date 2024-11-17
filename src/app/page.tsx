@@ -1,6 +1,6 @@
 import { CallToAction } from "@/sections/CallToAction";
 import { Features } from "@/sections/Features";
-// import { Footercode } from "@/sections/max-w-sm mx-auto";
+import { Footer } from "@/sections/Footer";
 import { Header } from "@/sections/Header";
 import { Hero } from "@/sections/Hero";
 import { LogoTicker } from "@/sections/LogoTicker";
@@ -15,7 +15,7 @@ export default function Home() {
       <Features />
       <Testimonials />
       <CallToAction />
-      {/* <Footercode /> */}
+      <Footer />
     </>
   );
 }
