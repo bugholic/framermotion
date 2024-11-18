@@ -81,15 +81,11 @@ const FeatureTab = (
 
     animate(xPercentage, [0, 100, 100, 0, 0], options);
     animate(yPercentage, [0, 0, 100, 100, 0], options);
-  }, []);
+  }, [props.selected]);
 
-  const handleTabHover = () => {
-    if (dotLottieRef.current === null) return;
-  };
   return (
     <div
       ref={tabRef}
-      onMouseEnter={handleTabHover}
       className="relative border border-white/15 rounded-xl p-2.5 flex items-center gap-2.5 lg:flex-1"
       onClick={props.onClick}
     >
@@ -150,7 +146,6 @@ export const Features = () => {
       animateOptions
     );
   };
-
   return (
     <section className="container py-20 md:py-24">
       <h2 className="text-5xl md:text-6xl text-center tracking-tighter">
