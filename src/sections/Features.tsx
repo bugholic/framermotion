@@ -78,7 +78,7 @@ const FeatureTab = (tab: (typeof tabs)[number]) => {
 
   const handleTabHover = () => {
     if (dotLottieRef.current === null) return;
-    // dotLottieRef.current.play();
+
   };
   return (
     <div
